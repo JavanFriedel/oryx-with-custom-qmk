@@ -8,13 +8,6 @@ enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-  if (!process_achordion(keycode, record)) { return false; }
-  // Your macros ...
-
-  return true;
-}
-
 void housekeeping_task_user(void) {
   achordion_task();
 }
@@ -132,6 +125,8 @@ bool rgb_matrix_indicators_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+   if (!process_achordion(keycode, record)) { return false; }
+
   switch (keycode) {
 
     case RGB_SLD:
