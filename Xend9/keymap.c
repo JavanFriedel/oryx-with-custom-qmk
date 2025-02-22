@@ -125,10 +125,8 @@ bool rgb_matrix_indicators_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-   if (!process_achordion(keycode, record)) { return false; }
 
   switch (keycode) {
-
     case RGB_SLD:
         if (rawhid_state.rgb_control) {
             return false;
@@ -138,7 +136,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
   }
+
+   if (!process_achordion(keycode, record)) { return false; }
+
   return true;
+}
+
+// Add these Achordion configuration functions
+bool achordion_chord(uint16_t tap_hold_keycode,
+                    keyrecord_t* tap_hold_record,
+                    uint16_t other_keycode,
+                    keyrecord_t* other_record) {
+  // Use opposite hands rule - only consider hold when keys are on opposite hands
+  return achordion_opposite_hands(tap_hold_record, other_record);
+}
+
+uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
+  return 200;  // 200ms timeout (adjust this value to your preference)
+}
+
+// Optional: Configure which mods are applied eagerly
+bool achordion_eager_mod(uint8_t mod) {
+  // Make shift and ctrl eager, but not alt and gui
+  return (mod & (MOD_LALT | MOD_LGUI)) == 0;
 }
 
 
